@@ -18,3 +18,12 @@ sudo apt-get install libzbar0
 ## Usage
 
 You can change the parameters with the constants in the `ttrckr.py` file. To determine the correct focus you can increase/decrease the focus value by five pressing i/d key in the active output window.
+
+
+## A word on the barcodes
+
+- Example for a usable [barcode generator](https://products.aspose.app/barcode/generate).
+- Recommended Code Type: Code 93 Standard.
+- Use a scalable image format to ensure the best output quality.
+- Our barcode size (printed): 120mm x 70mm.
+- Use plain white paper and a high printer resolution.

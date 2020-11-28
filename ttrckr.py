@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
 
-CAM_NUMBER = 4
-FOCUS = 20
-
 import cv2
 from pyzbar.pyzbar import decode
-from pyzbar.pyzbar import ZBarSymbol as symbol
+from pyzbar.pyzbar import ZBarSymbol as zbarsymbol
+
+CAM_NUMBER = 4
+FOCUS = 20
+CODE = zbarsymbol.CODE39
 
 class Tracker:
     cam = None
     # Set focus values: 0..255, increment: 5
     focus = 0
     show_window = False
+    codes = []
 
     # Webcam number: /etc/videoN.
-    def __init__(self, cam_number, focus, show_window = False):
+    def __init__(self, cam_number, focus, show_window = False, codes = []):
         self.cam = cv2.VideoCapture(cam_number)
         self.focus = focus
         self.show_window = show_window
+        self.codes = codes
 
     def run(self):
         self.cam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
@@ -47,10 +50,8 @@ class Tracker:
 
     def __scan(self, img):
         height, width = img.shape[:2]
-        results = decode((img.tobytes(), width, height)) 
+        results = decode((img.tobytes(), width, height), symbols=self.codes) 
         # print(results)
-        if len(results) == 0:
-            print("-")
         for result in results:
             print(result.data.decode("utf-8"))
 
@@ -69,7 +70,7 @@ class Tracker:
 
 
 if __name__ == "__main__":
-    tracker = Tracker(CAM_NUMBER, FOCUS, show_window=True)
+    tracker = Tracker(CAM_NUMBER, FOCUS, show_window=True, codes=[CODE])
     print("Press <esc> in the window to exit.")
     tracker.run()
 
