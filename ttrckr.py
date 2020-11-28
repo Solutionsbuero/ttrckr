@@ -6,7 +6,7 @@ from pyzbar.pyzbar import ZBarSymbol as zbarsymbol
 
 CAM_NUMBER = 4
 FOCUS = 20
-CODE = zbarsymbol.CODE39
+CODE = zbarsymbol.CODE93
 
 class Tracker:
     cam = None
@@ -28,7 +28,7 @@ class Tracker:
         while True:
             ret_val, img = self.cam.read()
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            proc = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+            proc = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 31, 8)
             if self.show_window:
                 if self.__window_output(proc):
                     return
