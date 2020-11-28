@@ -22,6 +22,7 @@ You can change the parameters with the constants in the `ttrckr.py` file. To det
 
 ## A word on the barcodes
 
+- Use a single digit number (do not use characters for the moment).
 - Example for a usable [barcode generator](https://products.aspose.app/barcode/generate).
 - Recommended Code Type: Code 93 Standard.
 - Use a scalable image format to ensure the best output quality.
