@@ -4,6 +4,8 @@ CAM_NUMBER = 4
 FOCUS = 20
 
 import cv2
+from pyzbar.pyzbar import decode
+from pyzbar.pyzbar import ZBarSymbol as symbol
 
 class Tracker:
     cam = None
@@ -23,11 +25,11 @@ class Tracker:
         while True:
             ret_val, img = self.cam.read()
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            # ret, img = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-            img = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+            proc = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
             if self.show_window:
-                if self.__window_output(img):
+                if self.__window_output(proc):
                     return
+            self.__scan(proc)
 
     def __window_output(self, img):
         cv2.imshow('ttrckr', img)
@@ -42,6 +44,15 @@ class Tracker:
             self.__set_focus(self.focus - 5)
             print(f"decrease focus to {self.focus}")
         pass
+
+    def __scan(self, img):
+        height, width = img.shape[:2]
+        results = decode((img.tobytes(), width, height)) 
+        # print(results)
+        if len(results) == 0:
+            print("-")
+        for result in results:
+            print(result.data.decode("utf-8"))
 
     def __set_focus(self, value):
         if value < 0:
