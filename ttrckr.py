@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 CAM_NUMBER = 4
-FOCUS = 0
+FOCUS = 20
 
 import cv2
 
@@ -22,7 +22,9 @@ class Tracker:
         self.__set_focus(self.focus)
         while True:
             ret_val, img = self.cam.read()
-            img = cv.medianBlur(img, 5)
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # ret, img = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+            img = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
             if self.show_window:
                 if self.__window_output(img):
                     return
