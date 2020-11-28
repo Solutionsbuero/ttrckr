@@ -22,6 +22,7 @@ class Tracker:
         self.__set_focus(self.focus)
         while True:
             ret_val, img = self.cam.read()
+            img = cv.medianBlur(img, 5)
             if self.show_window:
                 if self.__window_output(img):
                     return
